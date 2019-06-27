@@ -25,6 +25,7 @@ import (
 	"github.com/DMarby/picsum-photos/storage"
 	fileStorage "github.com/DMarby/picsum-photos/storage/file"
 	"github.com/DMarby/picsum-photos/storage/spaces"
+	"github.com/jivalabs/picsum-photos/database/mysql"
 
 	"github.com/jamiealquiza/envy"
 	"go.uber.org/zap"
@@ -80,13 +81,17 @@ var (
 	cacheRedisPoolSize = flag.Int("cache-redis-pool-size", 10, "redis connection pool size")
 
 	// Database
-	databaseBackend = flag.String("database", "file", "which database backend to use (file, postgresql)")
+	//databaseBackend = flag.String("database", "file", "which database backend to use (file, postgresql)")
+	databaseBackend = flag.String("database", "mysql", "which database backend to use (file, mysql)")
 
 	// Database - File
 	databaseFilePath = flag.String("database-file-path", "./test/fixtures/file/metadata.json", "path to the database file")
 
 	// Database - Postgresql
 	databasePostgresqlAddress = flag.String("database-postgresql-address", "postgresql://postgres@127.0.0.1/postgres", "postgresql address")
+
+	// Database - MySQL
+	databaseMysqlAddress = flag.String("database-mysql-address", "root@tcp(127.0.0.1:3306)/imaginary", "mysql address")
 )
 
 func main() {
@@ -208,6 +213,8 @@ func setupBackends() (storage storage.Provider, cache cache.Provider, database d
 		database, err = fileDatabase.New(*databaseFilePath)
 	case "postgresql":
 		database, err = postgresql.New(*databasePostgresqlAddress)
+	case "mysql":
+		database, err = mysql.New(*databaseMysqlAddress)
 	default:
 		err = fmt.Errorf("invalid database backend")
 	}

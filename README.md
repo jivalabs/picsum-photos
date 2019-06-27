@@ -9,6 +9,13 @@ It's written in Go, and uses Redis, PostgreSQL and DigitalOcean Spaces.
 First, make sure you have Go installed, and this git repo cloned.  
 You will also need to [install libvips](https://jcupitt.github.io/libvips/install.html).
 
+To build the backend, you need to set following env variables.
+
+```bash
+export PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"
+export CGO_CFLAGS_ALLOW=-Xpreprocessor
+```
+
 To build the frontend, you need to have NodeJS installed.
 Run the following commands to install the dependencies and build it:
 ```
