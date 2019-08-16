@@ -7,7 +7,7 @@ import (
 	//"github.com/jackc/pgx"
 	//"github.com/jackc/pgx/pgtype"
 	//"github.com/jackc/pgx/stdlib"
-	"github.com/DMarby/picsum-photos/database"
+	"github.com/jivalabs/picsum-photos/database"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -16,30 +16,24 @@ type Provider struct {
 	db *sqlx.DB
 }
 
+type SpaceProvider struct {
+	db *sqlx.DB
+}
+
+func NewSpace(address string) (*SpaceProvider, error) {
+	db, err := sqlx.Connect("mysql", address)
+	if err != nil {
+		return nil, err
+	}
+
+	// Use Unsafe so that the app doesn't fail if we add new columns to the database
+	return &SpaceProvider{
+		db: db.Unsafe(),
+	}, nil
+}
+
 // New returns a new Provider instance
 func New(address string) (*Provider, error) {
-	// Needed to work with pgbouncer
-	//d := &stdlib.DriverConfig{
-	//	ConnConfig: mysql.Config{
-	//		PreferSimpleProtocol: true,
-	//		RuntimeParams: map[string]string{
-	//			"client_encoding": "UTF8",
-	//		},
-	//		CustomConnInfo: func(c *pgx.Conn) (*pgtype.ConnInfo, error) {
-	//			info := c.ConnInfo.DeepCopy()
-	//			info.RegisterDataType(pgtype.DataType{
-	//				Value: &pgtype.OIDValue{},
-	//				Name:  "int8OID",
-	//				OID:   pgtype.Int8OID,
-	//			})
-	//
-	//			return info, nil
-	//		},
-	//	},
-	//}
-
-	//stdlib.RegisterDriverConfig(d)
-
 	db, err := sqlx.Connect("mysql", address)
 	if err != nil {
 		return nil, err
@@ -91,7 +85,7 @@ func (p *Provider) ListAll() ([]database.Image, error) {
 // List returns a list of all the images with an offset/limit
 func (p *Provider) List(offset, limit int) ([]database.Image, error) {
 	i := []database.Image{}
-	err := p.db.Select(&i, "select * from image order by id OFFSET $1 LIMIT $2", offset, limit)
+	err := p.db.Select(&i, "select * from image order by id LIMIT ?, ?", offset, limit)
 
 	if err != nil {
 		return nil, err
@@ -103,4 +97,50 @@ func (p *Provider) List(offset, limit int) ([]database.Image, error) {
 // Shutdown shuts down the database client
 func (p *Provider) Shutdown() {
 	p.db.Close()
+}
+
+func (p *SpaceProvider) CreateSpace(name string, location string) (*database.Space, error) {
+	stmsIns, err := p.db.Prepare("INSERT INTO space VALUES (?, ?, ?)")
+	if err != nil {
+		return nil, err
+	}
+
+	defer stmsIns.Close()
+
+	result, err := stmsIns.Exec(name, location, "")
+	if err != nil {
+		return nil, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	space, err := p.GetSpaceById(id)
+	if err != nil {
+		return nil, err
+	}
+	return space, nil
+}
+
+func (p *SpaceProvider) GetSpaceList() ([]database.Space, error) {
+	s := []database.Space{}
+	err := p.db.Select(&s, "SELECT id, name, defaultLocale FROM space")
+	return s, err
+}
+
+func (p *SpaceProvider) GetSpaceById(spaceId int64) (*database.Space, error) {
+	s := &database.Space{}
+	err := p.db.Get(s, "select * from space where id = ?", spaceId)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, database.ErrNotFound
+		}
+
+		return nil, err
+	}
+
+	return s, nil
 }

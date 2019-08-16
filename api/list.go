@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/DMarby/picsum-photos/api/handler"
-	"github.com/DMarby/picsum-photos/database"
+	"github.com/jivalabs/picsum-photos/api/handler"
+	"github.com/jivalabs/picsum-photos/database"
 )
 
 const (

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/DMarby/picsum-photos/logger"
+	"github.com/jivalabs/picsum-photos/logger"
 )
 
 // Logger is a handler that logs requests using Zap

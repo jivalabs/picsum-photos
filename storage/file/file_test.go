@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"reflect"
 
-	"github.com/DMarby/picsum-photos/storage/file"
+	"github.com/jivalabs/picsum-photos/storage/file"
 
 	"testing"
 )

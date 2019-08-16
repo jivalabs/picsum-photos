@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/DMarby/picsum-photos/database"
 	"github.com/gorilla/mux"
+	"github.com/jivalabs/picsum-photos/database"
 )
 
 // Errors

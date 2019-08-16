@@ -3,7 +3,7 @@ package mock
 import (
 	"fmt"
 
-	"github.com/DMarby/picsum-photos/database"
+	"github.com/jivalabs/picsum-photos/database"
 )
 
 // Provider implements a mock image storage

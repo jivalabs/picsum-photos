@@ -3,7 +3,7 @@ package mock
 import (
 	"fmt"
 
-	"github.com/DMarby/picsum-photos/cache"
+	"github.com/jivalabs/picsum-photos/cache"
 )
 
 // Provider is a mock cache

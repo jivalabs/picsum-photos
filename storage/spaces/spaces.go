@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/DMarby/picsum-photos/database"
+	"github.com/jivalabs/picsum-photos/database"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"

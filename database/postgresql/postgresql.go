@@ -3,7 +3,7 @@ package postgresql
 import (
 	"database/sql"
 
-	"github.com/DMarby/picsum-photos/database"
+	"github.com/jivalabs/picsum-photos/database"
 
 	"github.com/jackc/pgx"
 	"github.com/jackc/pgx/pgtype"
@@ -16,8 +16,91 @@ type Provider struct {
 	db *sqlx.DB
 }
 
-// New returns a new Provider instance
-func New(address string) (*Provider, error) {
+type SpaceProvider struct {
+	db *sqlx.DB
+}
+
+func (p *SpaceProvider) CreateSpace(name string, location string) (*database.Space, error) {
+	stmsIns, err := p.db.Prepare("INSERT INTO space VALUES (?, ?)")
+	if err != nil {
+		return nil, err
+	}
+
+	defer stmsIns.Close()
+
+	result, err := stmsIns.Exec(name, location)
+	if err != nil {
+		return nil, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	space, err := p.GetSpaceById(id)
+	if err != nil {
+		return nil, err
+	}
+	return space, nil
+}
+
+func (p *SpaceProvider) GetSpaceList() ([]database.Space, error) {
+	s := []database.Space{}
+	err := p.db.Get(&s, "select * from space")
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, database.ErrNotFound
+		}
+
+		return nil, err
+	}
+
+	return s, nil
+}
+
+func (p *SpaceProvider) GetSpaceById(spaceId int64) (*database.Space, error) {
+	s := &database.Space{}
+	err := p.db.Get(s, "select * from image where id = $1", spaceId)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, database.ErrNotFound
+		}
+
+		return nil, err
+	}
+
+	return s, nil
+
+	//var id int
+	//var name string
+	//var locale string
+	//
+	//err := p.db.QueryRow("SELECT id, name, defaultLocale FROM space WHERE id = ?", spaceId).Scan(&id, &name, &locale)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//return database.Space{
+	//
+	//}, nil
+}
+
+func NewSpace(address string) (*SpaceProvider, error) {
+
+	db, err := dbConfig(address)
+	if err != nil {
+		return nil, err
+	}
+
+	return &SpaceProvider{
+		db: db.Unsafe(),
+	}, nil
+}
+
+func dbConfig(address string) (*sqlx.DB, error) {
 	// Needed to work with pgbouncer
 	d := &stdlib.DriverConfig{
 		ConnConfig: pgx.ConnConfig{
@@ -40,11 +123,16 @@ func New(address string) (*Provider, error) {
 
 	stdlib.RegisterDriverConfig(d)
 
-	db, err := sqlx.Connect("pgx", d.ConnectionString(address))
+	return sqlx.Connect("pgx", d.ConnectionString(address))
+}
+
+// New returns a new Provider instance
+func New(address string) (*Provider, error) {
+
+	db, err := dbConfig(address)
 	if err != nil {
 		return nil, err
 	}
-
 	// Use Unsafe so that the app doesn't fail if we add new columns to the database
 	return &Provider{
 		db: db.Unsafe(),

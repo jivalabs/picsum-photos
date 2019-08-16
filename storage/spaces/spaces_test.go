@@ -10,12 +10,12 @@ import (
 	"os"
 	"reflect"
 
-	"github.com/DMarby/picsum-photos/database"
-	"github.com/DMarby/picsum-photos/storage/spaces"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/jivalabs/picsum-photos/database"
+	"github.com/jivalabs/picsum-photos/storage/spaces"
 
 	"testing"
 )

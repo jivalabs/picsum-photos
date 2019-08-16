@@ -2,5 +2,5 @@
 
 set -ex
 
-docker build . -t dmarby/picsum-photos-varnish:latest
-docker push dmarby/picsum-photos-varnish:latest
+docker build . -t DMarby/picsum-photos-varnish:latest
+docker push DMarby/picsum-photos-varnish:latest

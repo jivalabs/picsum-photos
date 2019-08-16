@@ -11,21 +11,21 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/DMarby/picsum-photos/api"
-	"github.com/DMarby/picsum-photos/cache"
-	"github.com/DMarby/picsum-photos/cache/memory"
-	"github.com/DMarby/picsum-photos/cache/redis"
-	"github.com/DMarby/picsum-photos/database"
-	fileDatabase "github.com/DMarby/picsum-photos/database/file"
-	"github.com/DMarby/picsum-photos/database/postgresql"
-	"github.com/DMarby/picsum-photos/health"
-	"github.com/DMarby/picsum-photos/image"
-	"github.com/DMarby/picsum-photos/image/vips"
-	"github.com/DMarby/picsum-photos/logger"
-	"github.com/DMarby/picsum-photos/storage"
-	fileStorage "github.com/DMarby/picsum-photos/storage/file"
-	"github.com/DMarby/picsum-photos/storage/spaces"
+	"github.com/jivalabs/picsum-photos/api"
+	"github.com/jivalabs/picsum-photos/cache"
+	"github.com/jivalabs/picsum-photos/cache/memory"
+	"github.com/jivalabs/picsum-photos/cache/redis"
+	"github.com/jivalabs/picsum-photos/database"
+	fileDatabase "github.com/jivalabs/picsum-photos/database/file"
 	"github.com/jivalabs/picsum-photos/database/mysql"
+	"github.com/jivalabs/picsum-photos/database/postgresql"
+	"github.com/jivalabs/picsum-photos/health"
+	"github.com/jivalabs/picsum-photos/image"
+	"github.com/jivalabs/picsum-photos/image/vips"
+	"github.com/jivalabs/picsum-photos/logger"
+	"github.com/jivalabs/picsum-photos/storage"
+	fileStorage "github.com/jivalabs/picsum-photos/storage/file"
+	"github.com/jivalabs/picsum-photos/storage/spaces"
 
 	"github.com/jamiealquiza/envy"
 	"go.uber.org/zap"
@@ -110,7 +110,7 @@ func main() {
 	defer shutdown()
 
 	// Initialize the storage, cache and database
-	storage, cache, database, err := setupBackends()
+	storage, cache, database, spaceDb, err := setupBackends()
 	if err != nil {
 		log.Fatalf("error initializing backends: %s", err)
 	}
@@ -150,9 +150,11 @@ func main() {
 		StaticPath:     staticPath,
 		HandlerTimeout: handlerTimeout,
 	}
+
+	rootRouter := getRootRouter(api.Router(), spaceDb, log)
 	server := &http.Server{
 		Addr:         *listen,
-		Handler:      api.Router(),
+		Handler:      rootRouter,
 		ReadTimeout:  readTimeout,
 		WriteTimeout: writeTimeout,
 	}
@@ -178,7 +180,18 @@ func main() {
 	}
 }
 
-func setupBackends() (storage storage.Provider, cache cache.Provider, database database.Provider, err error) {
+func getRootRouter(h http.Handler, database database.SpaceProvider, log *logger.Logger) http.Handler {
+	// Start and listen on http
+	spaceApi := &mysql.SpaceApi{
+		Database: database,
+		Log:      log,
+	}
+
+	return spaceApi.Router(h)
+}
+
+func setupBackends() (storage storage.Provider, cache cache.Provider, database database.Provider,
+	spaceDb database.SpaceProvider, err error) {
 	// Storage
 	switch *storageBackend {
 	case "file":
@@ -213,8 +226,10 @@ func setupBackends() (storage storage.Provider, cache cache.Provider, database d
 		database, err = fileDatabase.New(*databaseFilePath)
 	case "postgresql":
 		database, err = postgresql.New(*databasePostgresqlAddress)
+		spaceDb, err = postgresql.NewSpace(*databasePostgresqlAddress)
 	case "mysql":
 		database, err = mysql.New(*databaseMysqlAddress)
+		spaceDb, err = mysql.NewSpace(*databaseMysqlAddress)
 	default:
 		err = fmt.Errorf("invalid database backend")
 	}

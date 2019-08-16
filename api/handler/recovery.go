@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"runtime/debug"
 
-	"github.com/DMarby/picsum-photos/logger"
+	"github.com/jivalabs/picsum-photos/logger"
 )
 
 // Recovery is a handler for handling panics

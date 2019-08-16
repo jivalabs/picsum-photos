@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/DMarby/picsum-photos/api/params"
+	"github.com/jivalabs/picsum-photos/api/params"
 )
 
 // DeprecatedParams is a handler to handle deprecated query params for regular routes

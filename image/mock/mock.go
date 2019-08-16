@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/DMarby/picsum-photos/image"
+	"github.com/jivalabs/picsum-photos/image"
 )
 
 // Processor implements a mock image processor

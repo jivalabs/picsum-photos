@@ -2,16 +2,88 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"strconv"
+	"strings"
 
-	"github.com/DMarby/picsum-photos/api/handler"
-	"github.com/DMarby/picsum-photos/api/params"
-	"github.com/DMarby/picsum-photos/database"
-	"github.com/DMarby/picsum-photos/image"
 	"github.com/gorilla/mux"
+	"github.com/jivalabs/picsum-photos/api/handler"
+	"github.com/jivalabs/picsum-photos/api/params"
+	"github.com/jivalabs/picsum-photos/database"
+	"github.com/jivalabs/picsum-photos/image"
 )
 
 func (a *API) imageHandler(w http.ResponseWriter, r *http.Request) *handler.Error {
+	// Get the path and query parameters
+	uri := r.RequestURI
+	uriSlice := strings.Split(uri, "/")
+	if len(uriSlice) < 4 {
+		return nil
+	}
+	width, _ := strconv.Atoi(uriSlice[2])
+	height, _ := strconv.Atoi(uriSlice[3])
+	cmd := uriSlice[4]
+
+	from := strings.Index(uri, cmd) + len(cmd)
+	reminder := uri[from:]
+
+	log.Printf("width: %d height: %d cmd: %s reminder: %s", width, height, cmd, reminder)
+
+	databaseImage, err := a.Database.Get(reminder)
+	if err != nil {
+		if err == database.ErrNotFound {
+			return &handler.Error{Message: err.Error(), Code: http.StatusNotFound}
+		}
+
+		a.logError(r, "error getting image from database", err)
+		return handler.InternalServerError()
+	}
+
+	// Validate the parameters
+	//if err := params.ValidateParams(a.MaxImageSize, databaseImage, p); err != nil {
+	//	return handler.BadRequest(err.Error())
+	//}
+
+	// Default to the image width/height if 0 is passed
+
+	if width == 0 {
+		width = databaseImage.Width
+	}
+
+	if height == 0 {
+		height = databaseImage.Height
+	}
+
+	// Build the image task
+	task := image.NewTask(databaseImage.ID, width, height)
+
+	//if cmd == "Blur" {
+	//	task.Blur(p.BlurAmount)
+	//}
+	//
+	//if cmd == "Grayscale" {
+	//	task.Grayscale()
+	//}
+
+	// Process the image
+	processedImage, err := a.ImageProcessor.ProcessImage(r.Context(), task)
+	if err != nil {
+		a.logError(r, "error processing image", err)
+		return handler.InternalServerError()
+	}
+
+	// Set the headers
+	w.Header().Set("Content-Disposition", fmt.Sprintf("inline; filename=\"%s\"", buildFilenameNew(reminder, width, height)))
+	w.Header().Set("Content-Type", "image/jpeg")
+	w.Header().Set("Cache-Control", "public, max-age=2592000") // Cache for a month
+
+	// Return the image
+	w.Write(processedImage)
+	return nil
+}
+
+func (a *API) imageHandlerOld(w http.ResponseWriter, r *http.Request) *handler.Error {
 	// Get the path and query parameters
 	p, err := params.GetParams(r)
 	if err != nil {
@@ -74,6 +146,27 @@ func (a *API) imageHandler(w http.ResponseWriter, r *http.Request) *handler.Erro
 	w.Write(processedImage)
 
 	return nil
+}
+
+func buildFilenameNew(imageID string, width int, height int) string {
+	filename := fmt.Sprintf("%s-%dx%d", imageID, width, height)
+
+	//if p.Blur {
+	//	filename += fmt.Sprintf("-blur_%d", p.BlurAmount)
+	//}
+	//
+	//if p.Grayscale {
+	//	filename += "-grayscale"
+	//}
+
+	//if imageID == "" {
+	//	filename += ".jpg"
+	//} else {
+	//	ext := filepath.Ext(imageID)
+	//	filename += ext
+	//}
+
+	return filename
 }
 
 func buildFilename(imageID string, p *params.Params, width int, height int) string {

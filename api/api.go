@@ -5,13 +5,13 @@ import (
 	"path"
 	"time"
 
-	"github.com/DMarby/picsum-photos/api/handler"
+	"github.com/jivalabs/picsum-photos/api/handler"
 
-	"github.com/DMarby/picsum-photos/database"
-	"github.com/DMarby/picsum-photos/health"
-	"github.com/DMarby/picsum-photos/image"
-	"github.com/DMarby/picsum-photos/logger"
 	"github.com/gorilla/mux"
+	"github.com/jivalabs/picsum-photos/database"
+	"github.com/jivalabs/picsum-photos/health"
+	"github.com/jivalabs/picsum-photos/image"
+	"github.com/jivalabs/picsum-photos/logger"
 )
 
 // API is a http api
@@ -61,6 +61,8 @@ func (a *API) Router() http.Handler {
 	imageRouter := router.PathPrefix("").Subrouter()
 	imageRouter.Use(handler.DeprecatedParams)
 
+	imageRouter.PathPrefix("/img").Handler(handler.Handler(a.imageHandler)).Methods("GET")
+	imageRouter.Handle("/img/{width:[0-9]+}/{height:[0-9]+}/resize/{id:(*)?}", handler.Handler(a.imageHandler)).Methods("GET")
 	imageRouter.Handle("/{size:[0-9]+}{extension:(?:\\..*)?}", handler.Handler(a.randomImageRedirectHandler)).Methods("GET")
 	imageRouter.Handle("/{width:[0-9]+}/{height:[0-9]+}{extension:(?:\\..*)?}", handler.Handler(a.randomImageRedirectHandler)).Methods("GET")
 

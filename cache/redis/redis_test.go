@@ -5,8 +5,8 @@ package redis_test
 import (
 	"testing"
 
-	"github.com/DMarby/picsum-photos/cache"
-	"github.com/DMarby/picsum-photos/cache/redis"
+	"github.com/jivalabs/picsum-photos/cache"
+	"github.com/jivalabs/picsum-photos/cache/redis"
 	"github.com/mediocregopher/radix/v3"
 )
 

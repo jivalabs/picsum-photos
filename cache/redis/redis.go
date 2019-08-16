@@ -1,7 +1,7 @@
 package redis
 
 import (
-	"github.com/DMarby/picsum-photos/cache"
+	"github.com/jivalabs/picsum-photos/cache"
 	"github.com/mediocregopher/radix/v3"
 )
 

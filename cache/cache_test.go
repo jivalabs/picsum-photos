@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/DMarby/picsum-photos/cache"
-	"github.com/DMarby/picsum-photos/cache/mock"
+	"github.com/jivalabs/picsum-photos/cache"
+	"github.com/jivalabs/picsum-photos/cache/mock"
 )
 
 var mockLoaderFunc cache.LoaderFunc = func(ctx context.Context, key string) (data []byte, err error) {

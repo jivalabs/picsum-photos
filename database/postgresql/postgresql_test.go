@@ -5,8 +5,8 @@ package postgresql_test
 import (
 	"reflect"
 
-	"github.com/DMarby/picsum-photos/database"
-	"github.com/DMarby/picsum-photos/database/postgresql"
+	"github.com/jivalabs/picsum-photos/database"
+	"github.com/jivalabs/picsum-photos/database/postgresql"
 	"github.com/jmoiron/sqlx"
 
 	"testing"

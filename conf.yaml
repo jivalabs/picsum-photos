@@ -1,0 +1,12 @@
+port: :3306
+db:
+  driverName: mysql
+  user: root
+  password:
+  dbname:   imaginary
+  server:   "tcp(localhost:3306)"
+email:
+  from: bauzys@gmail.com
+  smtpUsername: bauzys@gmail.com
+  smtpPassword: Secret
+appPort: :8090

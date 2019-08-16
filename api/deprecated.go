@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/DMarby/picsum-photos/api/handler"
-	"github.com/DMarby/picsum-photos/api/params"
+	"github.com/jivalabs/picsum-photos/api/handler"
+	"github.com/jivalabs/picsum-photos/api/params"
 )
 
 // DeprecatedImage contains info about an image, in the old deprecated /list style

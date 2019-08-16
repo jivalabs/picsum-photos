@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"runtime"
 
-	"github.com/DMarby/picsum-photos/logger"
-	"github.com/DMarby/picsum-photos/vips"
+	"github.com/jivalabs/picsum-photos/logger"
+	"github.com/jivalabs/picsum-photos/vips"
 	"go.uber.org/zap"
 
 	"testing"

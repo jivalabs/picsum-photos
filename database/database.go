@@ -13,6 +13,12 @@ type Image struct {
 	URL    string `json:"url"`
 }
 
+type Space struct {
+	Id            int    `json:"id"`
+	Name          string `json:"name"`
+	DefaultLocale string `json:"defaultLocale"`
+}
+
 // Provider is an interface for listing and retrieving images
 type Provider interface {
 	Get(id string) (*Image, error)
@@ -20,6 +26,11 @@ type Provider interface {
 	ListAll() ([]Image, error)
 	List(offset, limit int) ([]Image, error)
 	Shutdown()
+}
+
+type SpaceProvider interface {
+	GetSpaceById(spaceId int64) (*Space, error)
+	GetSpaceList() ([]Space, error)
 }
 
 // Errors

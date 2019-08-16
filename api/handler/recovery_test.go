@@ -5,8 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/DMarby/picsum-photos/api/handler"
-	"github.com/DMarby/picsum-photos/logger"
+	"github.com/jivalabs/picsum-photos/api/handler"
+	"github.com/jivalabs/picsum-photos/logger"
 	"go.uber.org/zap"
 )
 

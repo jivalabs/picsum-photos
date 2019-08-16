@@ -3,8 +3,8 @@ package image
 import (
 	"context"
 
-	"github.com/DMarby/picsum-photos/cache"
-	"github.com/DMarby/picsum-photos/storage"
+	"github.com/jivalabs/picsum-photos/cache"
+	"github.com/jivalabs/picsum-photos/storage"
 )
 
 // Cache is an image cache

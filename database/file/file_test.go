@@ -3,8 +3,8 @@ package file_test
 import (
 	"reflect"
 
-	"github.com/DMarby/picsum-photos/database"
-	"github.com/DMarby/picsum-photos/database/file"
+	"github.com/jivalabs/picsum-photos/database"
+	"github.com/jivalabs/picsum-photos/database/file"
 
 	"testing"
 )

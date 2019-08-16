@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/DMarby/picsum-photos/api/handler"
+	"github.com/jivalabs/picsum-photos/api/handler"
 )
 
 func (a *API) healthHandler(w http.ResponseWriter, r *http.Request) *handler.Error {

@@ -3,7 +3,7 @@ package memory
 import (
 	"sync"
 
-	"github.com/DMarby/picsum-photos/cache"
+	"github.com/jivalabs/picsum-photos/cache"
 )
 
 // Provider implements a simple in-memory cache

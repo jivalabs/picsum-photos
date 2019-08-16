@@ -5,13 +5,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/DMarby/picsum-photos/cache"
-	"github.com/DMarby/picsum-photos/database"
-	"github.com/DMarby/picsum-photos/logger"
-	"github.com/DMarby/picsum-photos/storage"
+	"github.com/jivalabs/picsum-photos/cache"
+	"github.com/jivalabs/picsum-photos/database"
+	"github.com/jivalabs/picsum-photos/logger"
+	"github.com/jivalabs/picsum-photos/storage"
 )
 
-const checkInterval = 10 * time.Second
+const checkInterval = 100 * time.Second
 const checkTimeout = 8 * time.Second
 
 // Checker is a periodic health checker

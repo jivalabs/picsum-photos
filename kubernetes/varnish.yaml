@@ -17,7 +17,7 @@ spec:
         emptyDir: {}
       containers:
       - name: varnish
-        image: 'dmarby/picsum-photos-varnish@sha256:b587fe7beb4ae742a0d32f022b824371c73a51c6243c21c0868a4bf96eb506a0'
+        image: 'DMarby/picsum-photos-varnish@sha256:b587fe7beb4ae742a0d32f022b824371c73a51c6243c21c0868a4bf96eb506a0'
         args:
         - -F
         - -f/usr/local/etc/varnish/default.vcl

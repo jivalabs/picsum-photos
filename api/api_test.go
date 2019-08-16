@@ -12,24 +12,24 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/DMarby/picsum-photos/api"
-	"github.com/DMarby/picsum-photos/health"
-	"github.com/DMarby/picsum-photos/image"
-	"github.com/DMarby/picsum-photos/logger"
+	"github.com/jivalabs/picsum-photos/api"
+	"github.com/jivalabs/picsum-photos/health"
+	"github.com/jivalabs/picsum-photos/image"
+	"github.com/jivalabs/picsum-photos/logger"
 	"go.uber.org/zap"
 
-	"github.com/DMarby/picsum-photos/database"
-	fileDatabase "github.com/DMarby/picsum-photos/database/file"
-	mockDatabase "github.com/DMarby/picsum-photos/database/mock"
+	"github.com/jivalabs/picsum-photos/database"
+	fileDatabase "github.com/jivalabs/picsum-photos/database/file"
+	mockDatabase "github.com/jivalabs/picsum-photos/database/mock"
 
-	mockProcessor "github.com/DMarby/picsum-photos/image/mock"
-	vipsProcessor "github.com/DMarby/picsum-photos/image/vips"
+	mockProcessor "github.com/jivalabs/picsum-photos/image/mock"
+	vipsProcessor "github.com/jivalabs/picsum-photos/image/vips"
 
-	fileStorage "github.com/DMarby/picsum-photos/storage/file"
-	mockStorage "github.com/DMarby/picsum-photos/storage/mock"
+	fileStorage "github.com/jivalabs/picsum-photos/storage/file"
+	mockStorage "github.com/jivalabs/picsum-photos/storage/mock"
 
-	memoryCache "github.com/DMarby/picsum-photos/cache/memory"
-	mockCache "github.com/DMarby/picsum-photos/cache/mock"
+	memoryCache "github.com/jivalabs/picsum-photos/cache/memory"
+	mockCache "github.com/jivalabs/picsum-photos/cache/mock"
 
 	"testing"
 )

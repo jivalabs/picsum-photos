@@ -3,8 +3,8 @@ package memory_test
 import (
 	"testing"
 
-	"github.com/DMarby/picsum-photos/cache"
-	"github.com/DMarby/picsum-photos/cache/memory"
+	"github.com/jivalabs/picsum-photos/cache"
+	"github.com/jivalabs/picsum-photos/cache/memory"
 )
 
 func TestMemory(t *testing.T) {

@@ -7,11 +7,11 @@ import (
 	"reflect"
 	"runtime"
 
-	"github.com/DMarby/picsum-photos/cache/memory"
-	"github.com/DMarby/picsum-photos/image"
-	"github.com/DMarby/picsum-photos/image/vips"
-	"github.com/DMarby/picsum-photos/logger"
-	"github.com/DMarby/picsum-photos/storage/file"
+	"github.com/jivalabs/picsum-photos/cache/memory"
+	"github.com/jivalabs/picsum-photos/image"
+	"github.com/jivalabs/picsum-photos/image/vips"
+	"github.com/jivalabs/picsum-photos/logger"
+	"github.com/jivalabs/picsum-photos/storage/file"
 	"go.uber.org/zap"
 
 	"testing"

@@ -12,7 +12,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/DMarby/picsum-photos/logger"
+	"github.com/jivalabs/picsum-photos/logger"
 )
 
 // Image is a representation of the *C.VipsImage type

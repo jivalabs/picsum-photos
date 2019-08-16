@@ -1,6 +1,6 @@
 package vips
 
-import "github.com/DMarby/picsum-photos/vips"
+import "github.com/jivalabs/picsum-photos/vips"
 
 // resizedImage is a resized image
 type resizedImage struct {

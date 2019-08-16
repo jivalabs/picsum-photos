@@ -5,18 +5,18 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/DMarby/picsum-photos/health"
-	"github.com/DMarby/picsum-photos/logger"
+	"github.com/jivalabs/picsum-photos/health"
+	"github.com/jivalabs/picsum-photos/logger"
 	"go.uber.org/zap"
 
-	fileDatabase "github.com/DMarby/picsum-photos/database/file"
-	mockDatabase "github.com/DMarby/picsum-photos/database/mock"
+	fileDatabase "github.com/jivalabs/picsum-photos/database/file"
+	mockDatabase "github.com/jivalabs/picsum-photos/database/mock"
 
-	fileStorage "github.com/DMarby/picsum-photos/storage/file"
-	mockStorage "github.com/DMarby/picsum-photos/storage/mock"
+	fileStorage "github.com/jivalabs/picsum-photos/storage/file"
+	mockStorage "github.com/jivalabs/picsum-photos/storage/mock"
 
-	memoryCache "github.com/DMarby/picsum-photos/cache/memory"
-	mockCache "github.com/DMarby/picsum-photos/cache/mock"
+	memoryCache "github.com/jivalabs/picsum-photos/cache/memory"
+	mockCache "github.com/jivalabs/picsum-photos/cache/mock"
 )
 
 func TestHealth(t *testing.T) {

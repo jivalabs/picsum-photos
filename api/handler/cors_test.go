@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/DMarby/picsum-photos/api/handler"
+	"github.com/jivalabs/picsum-photos/api/handler"
 )
 
 func TestCORS(t *testing.T) {

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/DMarby/picsum-photos/image"
-	"github.com/DMarby/picsum-photos/logger"
-	"github.com/DMarby/picsum-photos/queue"
-	"github.com/DMarby/picsum-photos/vips"
+	"github.com/jivalabs/picsum-photos/image"
+	"github.com/jivalabs/picsum-photos/logger"
+	"github.com/jivalabs/picsum-photos/queue"
+	"github.com/jivalabs/picsum-photos/vips"
 )
 
 // Processor is an image processor that uses vips to process images

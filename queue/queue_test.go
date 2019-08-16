@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	queue "github.com/DMarby/picsum-photos/queue"
+	queue "github.com/jivalabs/picsum-photos/queue"
 )
 
 func setupQueue(f func(ctx context.Context, data interface{}) (interface{}, error)) (*queue.Queue, context.CancelFunc) {
