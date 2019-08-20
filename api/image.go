@@ -27,7 +27,7 @@ func (a *API) imageHandler(w http.ResponseWriter, r *http.Request) *handler.Erro
 	cmd := uriSlice[4]
 
 	from := strings.Index(uri, cmd) + len(cmd)
-	reminder := uri[from:]
+	reminder := uri[from+1:]
 
 	log.Printf("width: %d height: %d cmd: %s reminder: %s", width, height, cmd, reminder)
 
