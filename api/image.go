@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -17,6 +16,7 @@ import (
 // /img/width/height/resize/id
 func (a *API) imageHandler(w http.ResponseWriter, r *http.Request) *handler.Error {
 	// Get the path and query parameters
+	a.Log.Infof(r.RequestURI)
 	uri := r.RequestURI
 	uriSlice := strings.Split(uri, "/")
 	if len(uriSlice) < 4 {
@@ -29,7 +29,7 @@ func (a *API) imageHandler(w http.ResponseWriter, r *http.Request) *handler.Erro
 	from := strings.Index(uri, cmd) + len(cmd)
 	reminder := uri[from+1:]
 
-	log.Printf("width: %d height: %d cmd: %s reminder: %s", width, height, cmd, reminder)
+	a.Log.Infof("width: %d height: %d cmd: %s reminder: %s", width, height, cmd, reminder)
 
 	databaseImage, err := a.Database.Get(reminder)
 	if err != nil {
