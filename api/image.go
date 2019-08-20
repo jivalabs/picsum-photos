@@ -14,6 +14,7 @@ import (
 	"github.com/jivalabs/picsum-photos/image"
 )
 
+// /img/width/height/resize/id
 func (a *API) imageHandler(w http.ResponseWriter, r *http.Request) *handler.Error {
 	// Get the path and query parameters
 	uri := r.RequestURI
