@@ -47,7 +47,7 @@ func (a *API) listHandler(w http.ResponseWriter, r *http.Request) *handler.Error
 				Height: image.Height,
 				URL:    image.URL,
 			},
-			DownloadURL: fmt.Sprintf("%s/id/%d/%d/resize/%s", a.RootURL, image.Width, image.Height, image.ID),
+			DownloadURL: fmt.Sprintf("%s/img/%d/%d/resize/%s", a.RootURL, image.Width, image.Height, image.ID),
 		})
 	}
 

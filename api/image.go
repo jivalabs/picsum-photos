@@ -2,7 +2,9 @@ package api
 
 import (
 	"fmt"
+	"mime"
 	"net/http"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -27,7 +29,8 @@ func (a *API) imageHandler(w http.ResponseWriter, r *http.Request) *handler.Erro
 	cmd := uriSlice[4]
 
 	from := strings.Index(uri, cmd) + len(cmd)
-	reminder := uri[from+1:]
+	//reminder := uri[from+1:]
+	reminder := uri[from:]
 
 	a.Log.Infof("width: %d height: %d cmd: %s reminder: %s", width, height, cmd, reminder)
 
@@ -76,12 +79,18 @@ func (a *API) imageHandler(w http.ResponseWriter, r *http.Request) *handler.Erro
 
 	// Set the headers
 	w.Header().Set("Content-Disposition", fmt.Sprintf("inline; filename=\"%s\"", buildFilenameNew(reminder, width, height)))
-	w.Header().Set("Content-Type", "image/jpeg")
+	contentType := typeById(reminder)
+	w.Header().Set("Content-Type", contentType)
 	w.Header().Set("Cache-Control", "public, max-age=2592000") // Cache for a month
 
 	// Return the image
 	w.Write(processedImage)
 	return nil
+}
+
+func typeById(id string) string {
+	ext := filepath.Ext(id)
+	return mime.TypeByExtension(ext)
 }
 
 func (a *API) imageHandlerOld(w http.ResponseWriter, r *http.Request) *handler.Error {
