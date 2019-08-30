@@ -30,7 +30,7 @@ func (a *API) imageHandler(w http.ResponseWriter, r *http.Request) *handler.Erro
 
 	from := strings.Index(uri, cmd) + len(cmd)
 	//reminder := uri[from+1:]
-	reminder := uri[from:]
+	reminder := uri[from+1:]
 
 	a.Log.Infof("width: %d height: %d cmd: %s reminder: %s", width, height, cmd, reminder)
 
